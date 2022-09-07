@@ -28,6 +28,7 @@
 </head>
 
 <body class="container-fluid">
+
   <div class="row">
     {% block start %}
         <h2> Student Master</h2>
@@ -54,74 +55,71 @@
 
     {% endblock %}
   </div>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Add Data
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+            <label for="fname">Subject Name:</label><br>
+            <input type="text" id="fname" name="fname"><br>
+            <label for="lname">Subject Description:</label><br>
+            <input type="text" id="lname" name="lname">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" onclick="getdata()" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src = "https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 <script type = "text/javascript">
+    function getdata(){
+        var a =$('#fname').val();
+
+        var b =$('#lname').val();
+        $("#fname").change(function () {
+      var fname = $(this).val();
+
+      $.ajax({
+        url: 'insert',
+          method  : 'POST',
+        data: {
+          'fname': fname
+        },
+        dataType: 'json',
+        success: function (data) {
+            console.log(data)
+        }
+      });
+
+    });
+
+        alert(a);
+    alert(b);}
     $(document).ready(function(){
         $('#table').DataTable();
+        function getdata(){
+        var a =$('#fname').val();
+        alert(a);}
+
     });
 
-     $("#table").submit(function (e) {
-        e.preventDefault();
-        var serializedData = $(this).serialize();
-        $.ajax({
-            type: 'POST',
-            {#url: "{% url '/' %}",#}
-            data: serializedData,
-            success: function (response) {
-                $("#table").trigger('reset');
-                var instance = JSON.parse(response["instance"]);
-                var fields = instance[0]["fields"];
-                $("#table tbody").prepend(
-                    `<tr>
-                    <td>${fields["name"]||""}</td>
-                    <td>${fields["dob"]||""}</td>
-                    <td>${fields["year"]||""}</td>
-                    <td>${fields["cnic"]||""}</td>
-                    <td>${fields["subject_name"]||""}</td>
-                    <td>${fields["subject_description"]||""}</td>
-                    </tr>`
-                )
-            },
-            error: function (response) {
-                alert(response["responseJSON"]["error"]);
-            }
-        })
-    })
-    $(document).ready(function(){
-    $('#table').DataTable();
-
-    $('#submit').on('click', function(){
-        $subjectname = $('#subjectname').val();
-        $subjectdetail = $('#subjectdetail').val();
-
-        if(subjectname == "" || subjectdetail == ""){
-            alert("Please complete field");
-        }else{
-            $.ajax({
-                type: "POST",
-                url: "insert",
-                data:{
-                    subjectname: $subjectname,
-                    subjectdetail: $subjectdetail,
-                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
-                },
-                success: function(){
-                    alert('Save Data');
-                    $('#subjectname').val('');
-                    $('#subjectdetail').val('');
-                    window.location = "/";
-                }
-            });
-        }
-    });
-});
-
-
-
-{##}
 </script>
 </html>

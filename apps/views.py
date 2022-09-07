@@ -24,6 +24,5 @@ def postSubjectForm(request):
     return JsonResponse({"error": ""}, status=400)
 
 def insert(request):
-    SDetail = StudentDetail(firstname=request.POST['firstname'], lastname=request.POST['lastname'], address=request.POST['address'])
-    SDetail.save()
-    return redirect('/')
+    if request.method == "POST":
+        subject_name = request.POST.get('fname')
