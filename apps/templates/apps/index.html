@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="title" content="project">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="language" content="English">
+  <meta name="author" content="vinayak sharma">
+
+  <title>{{title}}</title>
+
+
+  <!-- bootstrap file -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"/>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"/>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <!-- bootstrap file-->
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body class="container-fluid">
+  <div class="row">
+    {% block start %}
+        <h2> Student Master</h2>
+        <table id = "table" class = "table table-bordered">
+            <thead class = "alert-success">
+                <tr>
+                    <th>Name</th>
+                    <th>DOB</th>
+                    <th>Year</th>
+                    <th>CNIC</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in studentMaster %}
+                <tr>
+                    <td>{{ i.name }}</td>
+                    <td>{{ i.dob }}</td>
+                    <td>{{ i.year }}</td>
+                    <td>{{ i.cnic }}</td>
+                </tr>
+               {% endfor %}
+            </tbody>
+        </table>
+
+    {% endblock %}
+  </div>
+
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src = "https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script type = "text/javascript">
+    $(document).ready(function(){
+        $('#table').DataTable();
+    });
+
+     $("#table").submit(function (e) {
+        e.preventDefault();
+        var serializedData = $(this).serialize();
+        $.ajax({
+            type: 'POST',
+            {#url: "{% url '/' %}",#}
+            data: serializedData,
+            success: function (response) {
+                $("#table").trigger('reset');
+                var instance = JSON.parse(response["instance"]);
+                var fields = instance[0]["fields"];
+                $("#table tbody").prepend(
+                    `<tr>
+                    <td>${fields["name"]||""}</td>
+                    <td>${fields["dob"]||""}</td>
+                    <td>${fields["year"]||""}</td>
+                    <td>${fields["cnic"]||""}</td>
+                    <td>${fields["subject_name"]||""}</td>
+                    <td>${fields["subject_description"]||""}</td>
+                    </tr>`
+                )
+            },
+            error: function (response) {
+                alert(response["responseJSON"]["error"]);
+            }
+        })
+    })
+    $(document).ready(function(){
+    $('#table').DataTable();
+
+    $('#submit').on('click', function(){
+        $subjectname = $('#subjectname').val();
+        $subjectdetail = $('#subjectdetail').val();
+
+        if(subjectname == "" || subjectdetail == ""){
+            alert("Please complete field");
+        }else{
+            $.ajax({
+                type: "POST",
+                url: "insert",
+                data:{
+                    subjectname: $subjectname,
+                    subjectdetail: $subjectdetail,
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function(){
+                    alert('Save Data');
+                    $('#subjectname').val('');
+                    $('#subjectdetail').val('');
+                    window.location = "/";
+                }
+            });
+        }
+    });
+});
+</script>
+</html>
