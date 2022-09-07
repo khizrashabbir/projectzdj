@@ -71,6 +71,7 @@
       </div>
       <div class="modal-body">
         <form>
+            {% csrf_token %}
             <label for="subjectname">Subject Name:</label><br>
             <input type="text" id="subjectname" name="subjectname"><br>
             <label for="subjectdescription">Subject Description:</label><br>
@@ -98,7 +99,8 @@
         url: 'insert/',
           method  : 'POST',
         data: {
-          'data': data
+          'data': data,
+            csrfmiddlewaretoken: '{{ csrf_token }}'
         },
         dataType: 'json',
         success: function (data) {

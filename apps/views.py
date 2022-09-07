@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import *
 from .forms import SubjectForm
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 # Create your views here.
 
@@ -27,3 +27,7 @@ def insert(request):
     if request.method == "POST":
         subject_name = request.POST.get('subjectname')
         subjectdescription = request.POST.get('subjectdescription')
+        return render({
+            'subject_name': subject_name, 'subjectdescription': subjectdescription
+        })
+        return HttpResponse("Ajax with Django Success!")
