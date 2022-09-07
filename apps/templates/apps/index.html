@@ -71,10 +71,10 @@
       </div>
       <div class="modal-body">
         <form>
-            <label for="fname">Subject Name:</label><br>
-            <input type="text" id="fname" name="fname"><br>
-            <label for="lname">Subject Description:</label><br>
-            <input type="text" id="lname" name="lname">
+            <label for="subjectname">Subject Name:</label><br>
+            <input type="text" id="subjectname" name="subjectname"><br>
+            <label for="subjectdescription">Subject Description:</label><br>
+            <input type="text" id="subjectdescription" name="subjectdescription">
         </form>
       </div>
       <div class="modal-footer">
@@ -91,28 +91,21 @@
 <script src = "https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 <script type = "text/javascript">
     function getdata(){
-        var a =$('#fname').val();
-
-        var b =$('#lname').val();
-        $("#fname").change(function () {
-      var fname = $(this).val();
-
+        var subjectname =$('#subjectname').val();
+        var subjectdescription =$('#subjectdescription').val();
+        data = subjectname + subjectdescription
       $.ajax({
-        url: 'insert',
+        url: 'insert/',
           method  : 'POST',
         data: {
-          'fname': fname
+          'data': data
         },
         dataType: 'json',
         success: function (data) {
             console.log(data)
         }
       });
-
-    });
-
-        alert(a);
-    alert(b);}
+    }
     $(document).ready(function(){
         $('#table').DataTable();
         function getdata(){

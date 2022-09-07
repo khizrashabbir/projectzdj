@@ -25,4 +25,4 @@ def postSubjectForm(request):
 
 def insert(request):
     if request.method == "POST":
-        subject_name = request.POST.get('fname')
+        subject_name = request.POST.get('subjectname')
