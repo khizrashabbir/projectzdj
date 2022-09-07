@@ -26,3 +26,4 @@ def postSubjectForm(request):
 def insert(request):
     if request.method == "POST":
         subject_name = request.POST.get('subjectname')
+        subjectdescription = request.POST.get('subjectdescription')
