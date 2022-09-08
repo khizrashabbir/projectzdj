@@ -8,7 +8,12 @@ from django.core import serializers
 
 def index(request):
     context = {}
-    context['studentMaster'] = StudentMaster.objects.all()
+    context['studentMaster'] = StudentDetail.objects.all()
+    return render(request, "apps/index.html", context)
+
+def student(request):
+    context = {}
+    context['student'] = StudentMaster.objects.all()
     return render(request, "apps/index.html", context)
 
 
@@ -27,7 +32,8 @@ def insert(request):
     if request.method == "POST":
         subject_name = request.POST.get('subjectname')
         subjectdescription = request.POST.get('subjectdescription')
-        return render({
-            'subject_name': subject_name, 'subjectdescription': subjectdescription
-        })
-        return HttpResponse("Ajax with Django Success!")
+        context = {
+            'subject_name': subject_name,
+            'subjectdescription': subjectdescription
+        }
+        return render(request, "apps/index.html", context)

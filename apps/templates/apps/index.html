@@ -39,15 +39,19 @@
                     <th>DOB</th>
                     <th>Year</th>
                     <th>CNIC</th>
+                    <th>Subject Name</th>
+                    <th>Subject Description</th>
                 </tr>
             </thead>
             <tbody>
                 {% for i in studentMaster %}
                 <tr>
-                    <td>{{ i.name }}</td>
-                    <td>{{ i.dob }}</td>
-                    <td>{{ i.year }}</td>
-                    <td>{{ i.cnic }}</td>
+                    <td>{{ i.student_master.name }}</td>
+                    <td>{{ i.student_master.dob }}</td>
+                    <td>{{ i.student_master.year }}</td>
+                    <td>{{ i.student_master.cnic }}</td>
+                    <td>{{ i.subject_name }}</td>
+                    <td>{{ i.subject_description }}</td>
                 </tr>
                {% endfor %}
             </tbody>
@@ -70,9 +74,16 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
-            {% csrf_token %}
-            <label for="subjectname">Subject Name:</label><br>
+          <form>
+              {% csrf_token %}
+             <label for="Name">Select Student:</label><br>
+              {% for i in student %}
+              <select name="cars" id="cars">
+                  <option value="volvo">{{ i.name }}</option>
+              </select>
+              {% endfor %}
+              <br><br>
+              <label for="subjectname">Subject Name:</label><br>
             <input type="text" id="subjectname" name="subjectname"><br>
             <label for="subjectdescription">Subject Description:</label><br>
             <input type="text" id="subjectdescription" name="subjectdescription">
@@ -111,7 +122,7 @@
     $(document).ready(function(){
         $('#table').DataTable();
         function getdata(){
-        var a =$('#fname').val();
+        var a =$('#subjectname').val();
         alert(a);}
 
     });
